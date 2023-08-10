@@ -1,0 +1,23 @@
+package mtnm.tmforum.org.flowDomain;
+
+/**
+ * Generated from IDL struct "EthernetOAMParamer_T".
+ *
+ * @author JacORB IDL compiler V 3.9
+ * @version generated at 13/07/2021 04:51:40 PM
+ */
+
+public final class EthernetOAMParamer_T
+	implements org.omg.CORBA.portable.IDLEntity
+{
+	/** Serial version UID. */
+	private static final long serialVersionUID = 1L;
+	public EthernetOAMParamer_T(){}
+	public java.lang.String oamPointName = "";
+	public int period;
+	public EthernetOAMParamer_T(java.lang.String oamPointName, int period)
+	{
+		this.oamPointName = oamPointName;
+		this.period = period;
+	}
+}

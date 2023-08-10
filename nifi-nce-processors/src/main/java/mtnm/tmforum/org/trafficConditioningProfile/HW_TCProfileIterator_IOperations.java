@@ -1,0 +1,18 @@
+package mtnm.tmforum.org.trafficConditioningProfile;
+
+
+/**
+ * Generated from IDL interface "HW_TCProfileIterator_I".
+ *
+ * @author JacORB IDL compiler V 3.9
+ * @version generated at 13/07/2021 04:51:40 PM
+ */
+
+public interface HW_TCProfileIterator_IOperations
+{
+	/* constants */
+	/* operations  */
+	boolean next_n(int how_many, mtnm.tmforum.org.trafficConditioningProfile.HW_TCProfileList_THolder tcProfileList) throws mtnm.tmforum.org.globaldefs.ProcessingFailureException;
+	int getLength() throws mtnm.tmforum.org.globaldefs.ProcessingFailureException;
+	void destroy() throws mtnm.tmforum.org.globaldefs.ProcessingFailureException;
+}
