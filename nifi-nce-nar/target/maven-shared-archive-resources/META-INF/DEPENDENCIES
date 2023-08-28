@@ -3,7 +3,7 @@
 // maven pom organized by organization.
 // ------------------------------------------------------------------
 
-nifi-nce-nar
+nifi-nceTX-nar
 
 
 From: 'an unknown organization'
@@ -47,15 +47,17 @@ From: 'Codehaus' (http://codehaus.org/)
 
 
 From: 'Eclipse Foundation' (https://www.eclipse.org)
-  - istack common utility code runtime (https://projects.eclipse.org/projects/ee4j/istack-commons/istack-commons-runtime) com.sun.istack:istack-commons-runtime:jar:3.0.8
-    License: Eclipse Distribution License - v 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
-  - fastinfoset (https://projects.eclipse.org/projects/ee4j.jaxb-impl/FastInfoset) com.sun.xml.fastinfoset:FastInfoset:jar:1.2.16
-    License: Apache License, Version 2.0  (http://www.opensource.org/licenses/apache2.0.php)    License: Eclipse Distribution License - v 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
-  - JavaBeans Activation Framework API jar (https://github.com/eclipse-ee4j/jaf/jakarta.activation-api) jakarta.activation:jakarta.activation-api:jar:1.2.1
+  - Jakarta Activation (https://github.com/eclipse-ee4j/jaf/jakarta.activation) com.sun.activation:jakarta.activation:jar:1.2.2
     License: EDL 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
-  - jakarta.xml.bind-api (https://github.com/eclipse-ee4j/jaxb-api/jakarta.xml.bind-api) jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.2
+  - istack common utility code runtime (https://projects.eclipse.org/projects/ee4j/istack-commons/istack-commons-runtime) com.sun.istack:istack-commons-runtime:jar:3.0.12
     License: Eclipse Distribution License - v 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
-  - Extended StAX API (https://projects.eclipse.org/projects/ee4j/stax-ex) org.jvnet.staxex:stax-ex:jar:1.8.1
+  - Jakarta Activation API jar (https://github.com/eclipse-ee4j/jaf/jakarta.activation-api) jakarta.activation:jakarta.activation-api:jar:1.2.2
+    License: EDL 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
+  - Jakarta XML Binding API (https://github.com/eclipse-ee4j/jaxb-api/jakarta.xml.bind-api) jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3
+    License: Eclipse Distribution License - v 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
+  - JAXB Runtime (https://eclipse-ee4j.github.io/jaxb-ri/) org.glassfish.jaxb:jaxb-runtime:jar:2.3.5
+    License: Eclipse Distribution License - v 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
+  - TXW2 Runtime (https://eclipse-ee4j.github.io/jaxb-ri/) org.glassfish.jaxb:txw2:jar:2.3.5
     License: Eclipse Distribution License - v 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
 
 From: 'JacORB' (http://www.jacorb.org)
@@ -69,12 +71,6 @@ From: 'JacORB' (http://www.jacorb.org)
 From: 'JBoss by Red Hat' (http://www.jboss.org)
   - Java RMI API (http://www.jboss.org/jboss-rmi-api_1.0_spec) org.jboss.spec.javax.rmi:jboss-rmi-api_1.0_spec:jar:1.0.6.Final
     License: lgpl  (http://repository.jboss.org/licenses/lgpl-2.1.txt)
-
-From: 'Oracle Corporation' (http://www.oracle.com/)
-  - JAXB Runtime (https://javaee.github.io/jaxb-v2/jaxb-runtime-parent/jaxb-runtime/) org.glassfish.jaxb:jaxb-runtime:jar:2.3.2
-    License: Eclipse Distribution License - v 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
-  - TXW2 Runtime (https://javaee.github.io/jaxb-v2/jaxb-txw-parent/txw2/) org.glassfish.jaxb:txw2:jar:2.3.2
-    License: Eclipse Distribution License - v 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
 
 
 

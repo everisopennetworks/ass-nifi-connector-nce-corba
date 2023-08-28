@@ -18,19 +18,19 @@ import org.slf4j.LoggerFactory;
 
 public class FlowWriter {
 
-    private static final Logger logger = LoggerFactory.getLogger(FlowWriter.class);
+    private  final Logger logger = LoggerFactory.getLogger(FlowWriter.class);
 
-    static ProcessSessionFactory sessionFactory;
-    static Relationship SUCCESS;
-    static ProcessContext context;
+    ProcessSessionFactory sessionFactory;
+    Relationship SUCCESS;
+    ProcessContext context;
 
-    public static void initWriter(ProcessContext currentContext, ProcessSessionFactory currentSessionFactory, Relationship currentSUCCESS) {
+    public  void initWriter(ProcessContext currentContext, ProcessSessionFactory currentSessionFactory, Relationship currentSUCCESS) {
         sessionFactory = currentSessionFactory;
         SUCCESS = currentSUCCESS;
         context = currentContext;
     }
 
-    public static void writeFlowFile(String msg) {
+    public  void writeFlowFile(String msg) {
 
         Map<PropertyDescriptor, String> processorProperties = context.getProperties();
         Map<String, String> generatedAttributes = new HashMap<String, String>();

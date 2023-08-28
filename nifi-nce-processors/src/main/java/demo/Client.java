@@ -53,7 +53,8 @@ public class Client  {
     //emsSeesion object
     private static EmsSession_I emsSession = null;
     //dynamic any factory,  for translating any type to dynamic any type
-    private static DynAnyFactory dynAnyFactory = null;;
+    private static DynAnyFactory dynAnyFactory = null;
+    private static FlowWriter fWw = new FlowWriter();
     public static void log(String str) {
         System.out.println(str);
     }
@@ -69,7 +70,7 @@ public class Client  {
         logger.info("EMS user name : " + args[2]);
         logger.info("Password for user " + args[2] + " : " + args[3]);
         logger.info("X-------------------------------------------------------X");
-        Client.getInstance().connect(args[0], args[1], args[2], args[3], args[4], args[5], args[6],args[7]);
+        Client.getInstance().connect(args[0], args[1], args[2], args[3], args[4], args[5], args[6],args[7],fWw);
     }
     /*
      * NSIP: naming service IP
@@ -79,7 +80,7 @@ public class Client  {
      * port: port test
      */
     public  int
-    connect(String NSIP, String NSPort,String userName, String passWord, String ruta, String IOR, String EMSInstance,String port) {
+    connect(String NSIP, String NSPort,String userName, String passWord, String ruta, String IOR, String EMSInstance,String port, FlowWriter fW) {
         int exec = 0;
         try {
 //initialize ORB parameters
@@ -121,7 +122,7 @@ public class Client  {
             props.setProperty("jacorb.security.jsse.trustees_from_ks", "on");
             //props.setProperty("org.omg.CORBA.ORBServerPort", port);
             //props.setProperty("org.omg.CORBA.ORBListenEndpoints", "iiop://localhost:"+port);
-            props.setProperty("jacorb.ports.poa_port", port);
+            props.setProperty("OASSLPort", port);
 
             props.setProperty("org.omg.CORBA.ORBInitialHost", NSIP);
             props.setProperty("org.omg.CORBA.ORBInitialPort", NSPort);
@@ -206,7 +207,7 @@ public class Client  {
             logger.info("The step 8: query alarm successfully!");
             logger.info("The step 9: try to connect structuredPushConsumer to the event channel.");
 //get alarms from EventChannel
-            new AlarmReciever(orb,emsSession).activate();
+            new AlarmReciever(orb,emsSession,fW).activate();
             orb.run();
             logger.info("AlarmReceiever active.");
             exec = 1;
@@ -217,7 +218,7 @@ public class Client  {
     }
     public static void listen(){
 //get alarms from EventChannel
-        new AlarmReciever(orb,emsSession).activate();
+        new AlarmReciever(orb,emsSession,fWw).activate();
         orb.run();
         logger.info("AlarmReceiever listening.");
     }

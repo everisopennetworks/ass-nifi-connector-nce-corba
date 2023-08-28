@@ -72,7 +72,9 @@ import org.slf4j.LoggerFactory;
 public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(CorbaHuaweiNCE.class);
-	
+
+    public FlowWriter fW= new FlowWriter();
+
     public static final Validator CUST_PORT_VALIDATOR = StandardValidators.createLongValidator(0, 32635, true);
 
     public static final PropertyDescriptor NSIP = new PropertyDescriptor
@@ -138,8 +140,8 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
             .required(true)
             .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
             .build();
-    public static final Relationship SUCCESS = new Relationship.Builder()
-            .name("SUCCESS")
+    public  final Relationship SUCCESS = new Relationship.Builder()
+            .name("Success")
             .description("Final relationship")
             .build();
 
@@ -205,7 +207,7 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
     public void onTrigger(final ProcessContext context, final ProcessSessionFactory sessionFactory) throws ProcessException {
         if (!initialized.get()) {
             logger.info("CorbaHuaweiNCE OnTrigger");
-            FlowWriter.initWriter(context, sessionFactory, SUCCESS);
+            fW.initWriter(context, sessionFactory, SUCCESS);
 
             String[] innerArgs = new String[7];
             innerArgs[0] = context.getProperty(NSIP).getValue();
@@ -237,7 +239,7 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
             logger.info("EMS port : " +enmport);
             logger.info("-------------------------------------------------------");
 
-            int exec = Client.getInstance().connect(nsip, nsport, username, password, certstore, ior, emsinstance,enmport);
+            int exec = Client.getInstance().connect(nsip, nsport, username, password, certstore, ior, emsinstance,enmport,fW);
             if (exec == 1) {
                 logger.info("********************************************************************************************************");
                 logger.info("Finished NMS init");
