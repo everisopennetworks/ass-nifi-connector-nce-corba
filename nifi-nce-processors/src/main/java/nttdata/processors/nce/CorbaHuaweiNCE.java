@@ -55,6 +55,8 @@ import org.apache.nifi.processor.ProcessorInitializationContext;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.util.StandardValidators;
 
+import org.apache.nifi.logging.ComponentLog;
+
 import org.jacorb.orb.util.CorbaLoc;
 import org.omg.CosNaming.NameComponent;
 import org.omg.DynamicAny.DynAnyFactory;
@@ -151,6 +153,7 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
 
     private AtomicBoolean initialized = new AtomicBoolean(false);
 
+    private ComponentLog clogger;
     @Override
     protected void init(final ProcessorInitializationContext context) {
         final List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
@@ -167,6 +170,7 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
         final Set<Relationship> relationships = new HashSet<Relationship>();
         relationships.add(SUCCESS);
         this.relationships = Collections.unmodifiableSet(relationships);
+        this.clogger = getLogger();
     }
 
     @Override
@@ -236,20 +240,29 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
             logger.info("Naming service IP: " + innerArgs[0]);
             logger.info("Naming service port: " + innerArgs[1]);
             logger.info("EMS user name : " + innerArgs[2]);
-            logger.info("EMS port : " +enmport);
+            logger.info("Local port : " + enmport);
             logger.info("-------------------------------------------------------");
 
-            int exec = Client.getInstance().connect(nsip, nsport, username, password, certstore, ior, emsinstance,enmport,fW);
-            if (exec == 1) {
-                logger.info("********************************************************************************************************");
-                logger.info("Finished NMS init");
-                logger.info("********************************************************************************************************");
-                initialized.set(true);
+            try {
+                int exec = Client.getInstance().connect(nsip, nsport, username, password, certstore, ior, emsinstance, enmport, fW);
+
+                if (exec == 1) {
+                    logger.info("********************************************************************************************************");
+                    logger.info("Finished NMS init");
+                    logger.info("********************************************************************************************************");
+                    initialized.set(true);
+                }
+                else {
+                    initialized.set(false);
+                    clogger.info("Corba connection failed");
+                }
+
+            } catch (Exception e) {
+                clogger.error("Error: " + e.getMessage());
+                e.printStackTrace();
+                context.yield();
             }
-            else {
-                initialized.set(false);
-                logger.info("Corba connection failed");
-            }
+
             }
             logger.info("CorbaHuaweiNCE OnTrigger End");
             logger.info("Connection active: " + initialized);

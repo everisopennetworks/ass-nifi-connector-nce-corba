@@ -70,7 +70,11 @@ public class Client  {
         logger.info("EMS user name : " + args[2]);
         logger.info("Password for user " + args[2] + " : " + args[3]);
         logger.info("X-------------------------------------------------------X");
-        Client.getInstance().connect(args[0], args[1], args[2], args[3], args[4], args[5], args[6],args[7],fWw);
+        try {
+            Client.getInstance().connect(args[0], args[1], args[2], args[3], args[4], args[5], args[6],args[7],fWw);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     /*
      * NSIP: naming service IP
@@ -80,7 +84,7 @@ public class Client  {
      * port: port test
      */
     public  int
-    connect(String NSIP, String NSPort,String userName, String passWord, String ruta, String IOR, String EMSInstance,String port, FlowWriter fW) {
+    connect(String NSIP, String NSPort,String userName, String passWord, String ruta, String IOR, String EMSInstance,String port, FlowWriter fW)  throws Exception {
         int exec = 0;
         try {
 //initialize ORB parameters
@@ -171,7 +175,7 @@ public class Client  {
             } catch (Exception ex) {
                 logger.error("The step 5: get EmsSessionFactory_I object refrence from naming service failed! \n please confirm NCE CORBA is running and EMS name!");
                 ex.printStackTrace();
-                return 0;
+                throw ex;
             }
 //get emsSession
             NmsSession_IPOA pNmsSessionServant = new TANmsSession_IImpl();
@@ -186,7 +190,7 @@ public class Client  {
                 logger.error("The step 6: invoke getEmsSession interface to login NCE CORBA failed!");
                 logger.error(ex.getLocalizedMessage());
                 ex.printStackTrace();
-                return 0;
+                throw ex;
             }
 //get and list all supported Managers
             logger.info("The step 7: list all supported Managers:");
@@ -211,8 +215,9 @@ public class Client  {
             orb.run();
             logger.info("AlarmReceiever active.");
             exec = 1;
-        } catch (Throwable ex) {
-            ex.printStackTrace();
+        } catch (Throwable e) {
+            e.printStackTrace();
+            throw e;
         }
         return exec;
     }

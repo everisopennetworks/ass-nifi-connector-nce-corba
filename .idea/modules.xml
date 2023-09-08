@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ass-nifi-connector-nce-corba.iml" filepath="$PROJECT_DIR$/.idea/ass-nifi-connector-nce-corba.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nifi-nce-nar/nifi-nce-nar.iml" filepath="$PROJECT_DIR$/nifi-nce-nar/nifi-nce-nar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nifi-nce-processors/nifi-nce-processors.iml" filepath="$PROJECT_DIR$/nifi-nce-processors/nifi-nce-processors.iml" />
     </modules>
   </component>
 </project>
