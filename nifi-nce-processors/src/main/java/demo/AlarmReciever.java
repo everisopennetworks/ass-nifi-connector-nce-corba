@@ -42,11 +42,13 @@ public class AlarmReciever {
     private ConsumerAdmin consumerAdmin;
     private StructuredProxyPushSupplier proxyPushSupplier;
     private EmsSession_I emsSession_I;
+    private FlowWriter fW;
     // ORB object
     private org.omg.CORBA.ORB orb = null;
-    public AlarmReciever(org.jacorb.orb.ORB orb, EmsSession_I emsSession) {
+    public AlarmReciever(org.jacorb.orb.ORB orb, EmsSession_I emsSession, FlowWriter fW) {
         this.orb = orb;
         this.emsSession_I = emsSession;
+        this.fW = fW;
     }
     public void activate() {
         EventChannelHolder eventChannelHolder = new EventChannelHolder();
@@ -150,7 +152,7 @@ public class AlarmReciever {
             logger.error("Failed to connect to structuredPushConsumer to the event channel.");
         }
     }
-    public static void log(String log) {
+    public  void log(String log) {
         System.out.println(log);
     }
     class Consumer extends StructuredPushConsumerPOA {
@@ -182,7 +184,7 @@ public class AlarmReciever {
 
             event_string[event.filterable_data.length] = "\"event_type\": \"" + event.header.fixed_header.event_type.type_name + "\"";
             String event_json =Arrays.toString(event_string).replace("[", "{").replace("]", "}").replace("\n", "");
-            FlowWriter.writeFlowFile(event_json);
+            fW.writeFlowFile(event_json);
         }
         public void offer_change(EventType[] eventTypeArray,
                                  EventType[] eventTypeArray1) throws InvalidEventType {

@@ -55,6 +55,8 @@ import org.apache.nifi.processor.ProcessorInitializationContext;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.util.StandardValidators;
 
+import org.apache.nifi.logging.ComponentLog;
+
 import org.jacorb.orb.util.CorbaLoc;
 import org.omg.CosNaming.NameComponent;
 import org.omg.DynamicAny.DynAnyFactory;
@@ -72,7 +74,9 @@ import org.slf4j.LoggerFactory;
 public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(CorbaHuaweiNCE.class);
-	
+
+    public FlowWriter fW= new FlowWriter();
+
     public static final Validator CUST_PORT_VALIDATOR = StandardValidators.createLongValidator(0, 32635, true);
 
     public static final PropertyDescriptor NSIP = new PropertyDescriptor
@@ -138,8 +142,8 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
             .required(true)
             .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
             .build();
-    public static final Relationship SUCCESS = new Relationship.Builder()
-            .name("SUCCESS")
+    public  final Relationship SUCCESS = new Relationship.Builder()
+            .name("Success")
             .description("Final relationship")
             .build();
 
@@ -149,6 +153,7 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
 
     private AtomicBoolean initialized = new AtomicBoolean(false);
 
+    private ComponentLog clogger;
     @Override
     protected void init(final ProcessorInitializationContext context) {
         final List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
@@ -165,6 +170,7 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
         final Set<Relationship> relationships = new HashSet<Relationship>();
         relationships.add(SUCCESS);
         this.relationships = Collections.unmodifiableSet(relationships);
+        this.clogger = getLogger();
     }
 
     @Override
@@ -205,7 +211,7 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
     public void onTrigger(final ProcessContext context, final ProcessSessionFactory sessionFactory) throws ProcessException {
         if (!initialized.get()) {
             logger.info("CorbaHuaweiNCE OnTrigger");
-            FlowWriter.initWriter(context, sessionFactory, SUCCESS);
+            fW.initWriter(context, sessionFactory, SUCCESS);
 
             String[] innerArgs = new String[7];
             innerArgs[0] = context.getProperty(NSIP).getValue();
@@ -234,20 +240,29 @@ public class CorbaHuaweiNCE extends AbstractSessionFactoryProcessor {
             logger.info("Naming service IP: " + innerArgs[0]);
             logger.info("Naming service port: " + innerArgs[1]);
             logger.info("EMS user name : " + innerArgs[2]);
-            logger.info("EMS port : " +enmport);
+            logger.info("Local port : " + enmport);
             logger.info("-------------------------------------------------------");
 
-            int exec = Client.getInstance().connect(nsip, nsport, username, password, certstore, ior, emsinstance,enmport);
-            if (exec == 1) {
-                logger.info("********************************************************************************************************");
-                logger.info("Finished NMS init");
-                logger.info("********************************************************************************************************");
-                initialized.set(true);
+            try {
+                int exec = Client.getInstance().connect(nsip, nsport, username, password, certstore, ior, emsinstance, enmport, fW);
+
+                if (exec == 1) {
+                    logger.info("********************************************************************************************************");
+                    logger.info("Finished NMS init");
+                    logger.info("********************************************************************************************************");
+                    initialized.set(true);
+                }
+                else {
+                    initialized.set(false);
+                    clogger.info("Corba connection failed");
+                }
+
+            } catch (Exception e) {
+                clogger.error("Error: " + e.getMessage());
+                e.printStackTrace();
+                context.yield();
             }
-            else {
-                initialized.set(false);
-                logger.info("Corba connection failed");
-            }
+
             }
             logger.info("CorbaHuaweiNCE OnTrigger End");
             logger.info("Connection active: " + initialized);

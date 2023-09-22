@@ -22,8 +22,8 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>nifi-nce-nar</artifactId>
-    <version>1.18</version>
+    <artifactId>nifi-nce-nar-FAN</artifactId>
+    <version>1.20</version>
     <packaging>nar</packaging>
     <properties>
         <maven.javadoc.skip>true</maven.javadoc.skip>
